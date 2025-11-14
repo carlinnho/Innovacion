@@ -11,18 +11,20 @@ Este proyecto es un marketplace completo que permite a los usuarios explorar, co
 - **Frontend (React + Vite + Tailwind CSS)**
   - Interfaz moderna y responsiva
   - Sistema de autenticación con JWT
-  - Catálogo de productos con filtros avanzados
+  - Catálogo de productos con filtros avanzados y paginación
+  - Integración con API de categorías y subcategorías
   - Carrito de compras
   - Páginas de perfil de usuario
   - Diseño adaptativo para móviles y desktop
 
 - **Backend (Spring Boot + MySQL)**
   - API RESTful
-  - Autenticación y autorización con JWT
-  - Gestión de usuarios, productos y pedidos
+  - Autenticación y autorización con JWT (roles: USUARIO, PROVEEDOR, ADMINISTRADOR)
+  - Gestión de usuarios, productos, pedidos, categorías y subcategorías
   - Base de datos MySQL
   - Validación de datos
   - Manejo de errores global
+  - Endpoints públicos para categorías y subcategorías
 
 ## 🛠️ Tecnologías Utilizadas
 
@@ -230,18 +232,21 @@ Las siguientes páginas muestran un mensaje de "en construcción":
 #### Frontend
 - ✅ Navegación responsive
 - ✅ Sistema de autenticación (login/registro)
-- ✅ Catálogo de productos con filtros
+- ✅ Catálogo de productos con filtros avanzados (categorías, subcategorías, precio, popularidad)
+- ✅ Integración con API de categorías y subcategorías desde la base de datos
 - ✅ Paginación (15 productos por página)
 - ✅ Botón de scroll to top
 - ✅ Diseño moderno con Tailwind CSS
 
 #### Backend
 - ✅ API RESTful
-- ✅ Autenticación JWT
-- ✅ Gestión de usuarios
+- ✅ Autenticación JWT con roles (USUARIO, PROVEEDOR, ADMINISTRADOR)
+- ✅ Gestión de usuarios, categorías y subcategorías
+- ✅ Endpoints públicos para categorías y subcategorías
 - ✅ Conexión a base de datos MySQL
 - ✅ Validación de datos
 - ✅ Manejo de errores
+- ✅ Configuración de seguridad con Spring Security
 
 ## 🔐 Autenticación
 
@@ -251,6 +256,12 @@ El sistema utiliza JWT (JSON Web Tokens) para la autenticación. Los tokens se a
 
 - `POST /api/auth/login` - Iniciar sesión
 - `POST /api/auth/register` - Registrar nuevo usuario
+
+### Endpoints Públicos
+
+- `GET /api/public/categorias` - Obtener todas las categorías
+- `GET /api/public/categorias/subcategorias` - Obtener todas las subcategorías
+- `GET /api/public/categorias/{categoriaId}/subcategorias` - Obtener subcategorías por categoría
 
 ## 📊 Base de Datos
 
