@@ -1,4 +1,5 @@
 package com.marketplace.backend.config;
+
 import com.marketplace.backend.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -32,35 +33,33 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .authorizeHttpRequests(auth -> auth
-                // Endpoints públicos (acceso para invitados y todos)
-                .requestMatchers(
-                    "/api/usuarios/registro",
-                    "/api/usuarios/verificar-email",
-                    "/api/auth/login",
-                    "/api/public/**"  // Cualquier endpoint público adicional
-                ).permitAll()
-                
-                // Endpoints protegidos por rol
-                // Solo ADMINISTRADOR puede acceder a /api/admin/**
-                .requestMatchers("/api/admin/**").hasRole("ADMINISTRADOR")
-                
-                // Solo PROVEEDOR puede acceder a /api/proveedor/**
-                .requestMatchers("/api/proveedor/**").hasRole("PROVEEDOR")
-                
-                // USUARIO, PROVEEDOR y ADMINISTRADOR pueden acceder a /api/usuario/**
-                .requestMatchers("/api/usuario/**").hasAnyRole("USUARIO", "PROVEEDOR", "ADMINISTRADOR")
-                
-                // Cualquier otra petición requiere autenticación
-                .anyRequest().authenticated()
-            )
-            .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
-            // Agregar el filtro JWT antes del filtro de autenticación
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .authorizeHttpRequests(auth -> auth
+                        // Endpoints públicos (acceso para invitados y todos)
+                        .requestMatchers(
+                                "/api/usuarios/registro",
+                                "/api/usuarios/verificar-email",
+                                "/api/auth/login",
+                                "/api/public/**" // Cualquier endpoint público adicional
+                        ).permitAll()
+
+                        // Endpoints protegidos por rol
+                        // Solo ADMINISTRADOR puede acceder a /api/admin/**
+                        .requestMatchers("/api/admin/**").hasRole("ADMINISTRADOR")
+
+                        // Solo PROVEEDOR puede acceder a /api/proveedor/**
+                        .requestMatchers("/api/proveedor/**").hasRole("PROVEEDOR")
+
+                        // USUARIO, PROVEEDOR y ADMINISTRADOR pueden acceder a /api/usuario/**
+                        .requestMatchers("/api/usuario/**").hasAnyRole("USUARIO", "PROVEEDOR", "ADMINISTRADOR")
+
+                        // Cualquier otra petición requiere autenticación
+                        .anyRequest().authenticated())
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // Agregar el filtro JWT antes del filtro de autenticación
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -68,9 +67,19 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://localhost:3000"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+
+        // 🔥 IMPORTANTE: agregar tu dominio de Vercel
+        configuration.setAllowedOrigins(Arrays.asList(
+                "http://localhost:5173",
+                "http://localhost:3000",
+                "https://innovacion-snowy.vercel.app" // ← tu frontend real
+        ));
+
+        configuration.setAllowedMethods(Arrays.asList(
+                "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+
         configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setExposedHeaders(Arrays.asList("Authorization")); // opcional
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
 
@@ -78,4 +87,5 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
 }
