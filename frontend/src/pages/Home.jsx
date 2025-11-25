@@ -62,7 +62,7 @@ export default function Home() {
 
   return (
     <main>
-      <script src="//code.tidio.co/mbxpg2jgj7sxno5t5iijfxojgwmjrozs.js" async></script>
+      
       <Hero />
       <section className="max-w-7xl mx-auto px-6 py-16">
         <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
@@ -118,7 +118,7 @@ export default function Home() {
                         ({Math.floor(producto.calificacionPromedio || 0)})
                       </span>
                     </div>
-                    <div className="flex-grow"></div>
+                    <div className="grow"></div>
                     <button className="w-full py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition text-sm mt-auto">
                       Añadir al carrito
                     </button>
