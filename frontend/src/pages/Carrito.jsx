@@ -226,7 +226,7 @@ function CarritoItem({ item, onActualizar, onEliminar }) {
   return (
     <div className="bg-white rounded-lg shadow-md p-4 flex gap-4">
       {/* Imagen */}
-      <div className="flex-shrink-0">
+      <div className="shrink-0">
         <img
           src={item.imagenUrl || "/placeholder.png"}
           alt={item.nombreProducto}
