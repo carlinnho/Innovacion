@@ -27,7 +27,11 @@ export default function Home() {
 
   // Datos simulados para el carrusel (Solo fondos de color por ahora)
   const slides = [
-    { id: 1, color: "bg-orange-500" }, // Puedes cambiar esto por <img src="" /> luego
+    {
+      id: 1,
+      color: "bg-orange-500",
+      img: "https://lh3.googleusercontent.com/gg-dl/ABS2GSmYrf6VrqiaWYN3XtibSqt0VTi4b5aJDDX7lUcsvboxs_mCuMF9Be9nbTjBtVaT-EzC5xuOk1jjBFnuf_ZAWy5YRIzYWps0STkDXnvPTt-2cb7twcEfHhdxYfWuFl3ahw6KBS1BmiakjABJLyIqSI6Vnam24UHbeO9k9tlIxe8pUbOjHw=s1024-rj",
+    }, // Puedes cambiar esto por <img src="" /> luego
     { id: 2, color: "bg-orange-400" },
     { id: 3, color: "bg-amber-500" },
   ];
@@ -176,7 +180,7 @@ export default function Home() {
             >
               {/* Aquí irá tu imagen de banner principal grande */}
               <p className="text-white text-2xl font-bold opacity-50">
-                Banner {slide.id} (1920x500)
+                <img src="" alt="" />
               </p>
             </div>
           ))}
@@ -204,37 +208,38 @@ export default function Home() {
       {/* 2. SECCIÓN DE BENEFICIOS (Barra informativa) */}
       <section className="bg-white py-8 border-b">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="flex items-center gap-4 p-4 border rounded-lg bg-gray-50">
-                <Truck className="text-orange-600" size={32} />
-                <div>
-                    <h4 className="font-bold text-gray-800">Envío Gratis</h4>
-                    <p className="text-sm text-gray-600">En pedidos mayores a S/100</p>
-                </div>
+          <div className="flex items-center gap-4 p-4 border rounded-lg bg-gray-50">
+            <Truck className="text-orange-600" size={32} />
+            <div>
+              <h4 className="font-bold text-gray-800">Envío Gratis</h4>
+              <p className="text-sm text-gray-600">
+                En pedidos mayores a S/100
+              </p>
             </div>
-            <div className="flex items-center gap-4 p-4 border rounded-lg bg-gray-50">
-                <ShieldCheck className="text-orange-600" size={32} />
-                <div>
-                    <h4 className="font-bold text-gray-800">Compra Segura</h4>
-                    <p className="text-sm text-gray-600">Protección de datos 100%</p>
-                </div>
+          </div>
+          <div className="flex items-center gap-4 p-4 border rounded-lg bg-gray-50">
+            <ShieldCheck className="text-orange-600" size={32} />
+            <div>
+              <h4 className="font-bold text-gray-800">Compra Segura</h4>
+              <p className="text-sm text-gray-600">Protección de datos 100%</p>
             </div>
-            <div className="flex items-center gap-4 p-4 border rounded-lg bg-gray-50">
-                <CreditCard className="text-orange-600" size={32} />
-                <div>
-                    <h4 className="font-bold text-gray-800">Pago Flexible</h4>
-                    <p className="text-sm text-gray-600">Tarjetas y Yape/Plin</p>
-                </div>
+          </div>
+          <div className="flex items-center gap-4 p-4 border rounded-lg bg-gray-50">
+            <CreditCard className="text-orange-600" size={32} />
+            <div>
+              <h4 className="font-bold text-gray-800">Pago Flexible</h4>
+              <p className="text-sm text-gray-600">Tarjetas y Yape/Plin</p>
             </div>
-            <div className="flex items-center gap-4 p-4 border rounded-lg bg-gray-50">
-                <Clock className="text-orange-600" size={32} />
-                <div>
-                    <h4 className="font-bold text-gray-800">Soporte 24/7</h4>
-                    <p className="text-sm text-gray-600">Atención personalizada</p>
-                </div>
+          </div>
+          <div className="flex items-center gap-4 p-4 border rounded-lg bg-gray-50">
+            <Clock className="text-orange-600" size={32} />
+            <div>
+              <h4 className="font-bold text-gray-800">Soporte 24/7</h4>
+              <p className="text-sm text-gray-600">Atención personalizada</p>
             </div>
+          </div>
         </div>
       </section>
-
 
       {/* 4. PRODUCTOS DESTACADOS */}
       <section className="max-w-7xl mx-auto px-6 py-8">
@@ -312,9 +317,6 @@ export default function Home() {
           </div>
         )}
       </section>
-
-      
-
 
       {/* Botón Scroll Top */}
       <button
