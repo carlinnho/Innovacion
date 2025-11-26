@@ -13,6 +13,11 @@ import {
   Home,
   Phone,
   Tag,
+  // Nuevos iconos para roles
+  LayoutDashboard, // Para Admin
+  PlusCircle,      // Para Crear Producto
+  ClipboardList,   // Para Reportes
+  Store            // Para Mis Productos (Proveedor)
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -27,7 +32,6 @@ export default function Navbar({ onLoginClick, onRegisterClick }) {
   const [usuario, setUsuario] = useState(null);
   const [menuAbierto, setMenuAbierto] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [query, setQuery] = useState("");
   const [showCategories, setShowCategories] = useState(false);
   const [expandedCategoryMobile, setExpandedCategoryMobile] = useState(null);
 
@@ -138,9 +142,7 @@ export default function Navbar({ onLoginClick, onRegisterClick }) {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between gap-4">
-            {/* ============================================== */}
-            {/* 1. CAMBIO: Botón Hamburguesa AHORA A LA IZQUIERDA */}
-            {/* ============================================== */}
+            {/* Botón Hamburguesa (Izquierda) */}
             <div className="flex items-center gap-2 lg:hidden">
               <button
                 onClick={() => setMobileOpen(true)}
@@ -177,7 +179,7 @@ export default function Navbar({ onLoginClick, onRegisterClick }) {
               </div>
             </div>
 
-            {/* Utilities (Derecha: Carrito y Usuario Desktop) */}
+            {/* Utilities (Carrito y Usuario Desktop) */}
             <div className="flex items-center gap-3">
               <button
                 onClick={() => handleNavigate("/carrito")}
@@ -211,29 +213,65 @@ export default function Navbar({ onLoginClick, onRegisterClick }) {
                   </button>
 
                   {menuAbierto && (
-                    <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50">
-                      <div className="px-4 py-2 border-b border-gray-100">
-                        <p className="text-sm font-semibold text-gray-800">
+                    <div className="absolute right-0 mt-2 w-72 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50">
+                      {/* Cabecera del dropdown con Rol */}
+                      <div className="px-4 py-3 border-b border-gray-100 bg-gray-50">
+                        <p className="text-sm font-bold text-gray-800">
                           {usuario.nombre} {usuario.apellido}
                         </p>
-                        <p className="text-xs text-gray-500">{usuario.email}</p>
+                        <p className="text-xs text-gray-500 mb-1">{usuario.email}</p>
+                        <span className="inline-block bg-orange-100 text-orange-700 text-[10px] font-extrabold px-2 py-0.5 rounded uppercase tracking-wider border border-orange-200">
+                           {usuario.rol}
+                        </span>
                       </div>
-                      <button
-                        onClick={() => handleNavigate("/miperfil")}
-                        className="w-full flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-orange-50"
-                      >
-                        <UserCircle size={16} /> <span>Mi Perfil</span>
-                      </button>
-                      <button
-                        onClick={() => handleNavigate("/mispedidos")}
-                        className="w-full flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-orange-50"
-                      >
-                        <Package size={16} /> <span>Mis Pedidos</span>
-                      </button>
-                      <div className="border-t border-gray-100 mt-2 pt-2">
+
+                      {/* Enlaces Comunes */}
+                      <div className="py-1">
+                        <button
+                          onClick={() => handleNavigate("/miperfil")}
+                          className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-orange-50"
+                        >
+                          <UserCircle size={16} /> <span>Mi Perfil</span>
+                        </button>
+                        <button
+                          onClick={() => handleNavigate("/mispedidos")}
+                          className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-orange-50"
+                        >
+                          <Package size={16} /> <span>Mis Pedidos</span>
+                        </button>
+                      </div>
+
+                      {/* --- SECCIÓN PROVEEDOR --- */}
+                      {usuario.rol === 'proveedor' && (
+                        <div className="py-1 border-t border-gray-100">
+                           <p className="px-4 py-1 text-xs font-bold text-gray-400 uppercase">Panel Proveedor</p>
+                           <button onClick={() => handleNavigate("/proveedor/productos")} className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
+                              <Store size={16} className="text-blue-600"/> <span>Mis Productos</span>
+                           </button>
+                           <button onClick={() => handleNavigate("/proveedor/productos/nuevo")} className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
+                              <PlusCircle size={16} className="text-green-600"/> <span>Crear Producto</span>
+                           </button>
+                           <button onClick={() => handleNavigate("/ReportesP")} className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
+                              <ClipboardList size={16} className="text-purple-600"/> <span>Reportes</span>
+                           </button>
+                        </div>
+                      )}
+
+                      {/* --- SECCIÓN ADMINISTRADOR --- */}
+                      {usuario.rol === 'administrador' && (
+                        <div className="py-1 border-t border-gray-100">
+                           <p className="px-4 py-1 text-xs font-bold text-gray-400 uppercase">Administración</p>
+                           <button onClick={() => handleNavigate("/Administrativa")} className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
+                              <LayoutDashboard size={16} className="text-red-600"/> <span>Panel Administrativo</span>
+                           </button>
+                        </div>
+                      )}
+
+                      {/* Logout */}
+                      <div className="border-t border-gray-100 mt-1 pt-1">
                         <button
                           onClick={handleCerrarSesion}
-                          className="w-full flex items-center gap-3 px-4 py-2 text-red-600 hover:bg-red-50"
+                          className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 font-medium"
                         >
                           <LogOut size={16} /> <span>Cerrar Sesión</span>
                         </button>
@@ -364,13 +402,14 @@ export default function Navbar({ onLoginClick, onRegisterClick }) {
       </header>
 
       {/* ========================================================= */}
-      {/* 2. CAMBIO: MOBILE DRAWER CON ANIMACIÓN (SLIDE-IN-LEFT)    */}
+      {/* MOBILE DRAWER (MENU LATERAL)                              */}
+      {/* ========================================================= */}
       <div
         className={`fixed inset-0 z-50 flex justify-start md:hidden transition-visibility duration-300 ${
           mobileOpen ? "visible" : "invisible pointer-events-none"
         }`}
       >
-        {/* Backdrop (Fondo Oscuro) con Fade In/Out */}
+        {/* Backdrop */}
         <div
           className={`fixed inset-0 bg-black/60 transition-opacity duration-300 ${
             mobileOpen ? "opacity-100" : "opacity-0"
@@ -378,13 +417,13 @@ export default function Navbar({ onLoginClick, onRegisterClick }) {
           onClick={() => setMobileOpen(false)}
         />
 
-        {/* El Sidebar con Slide In/Out desde la IZQUIERDA */}
+        {/* Sidebar */}
         <div
           className={`relative w-[85%] max-w-[340px] h-full bg-white shadow-2xl flex flex-col overflow-y-auto transform transition-transform duration-300 ease-in-out ${
             mobileOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          {/* CABECERA USUARIO */}
+          {/* CABECERA USUARIO MÓVIL */}
           <div className="bg-gray-100 p-4 border-b border-gray-200 flex flex-col gap-2">
             <div className="flex justify-between items-start">
               <p className="text-lg font-bold text-gray-800">
@@ -399,10 +438,14 @@ export default function Navbar({ onLoginClick, onRegisterClick }) {
             </div>
 
             {usuario ? (
-              <div className="flex items-center gap-2 text-sm text-gray-600">
-                <span className="bg-orange-100 text-orange-700 px-2 py-0.5 rounded text-xs font-bold border border-orange-200">
-                  {usuario.rol.toUpperCase()}
-                </span>
+              <div className="flex flex-col gap-1">
+                 <p className="text-sm text-gray-600">{usuario.email}</p>
+                 {/* Aquí mostramos el rol en móvil también */}
+                 <div>
+                    <span className="bg-orange-100 text-orange-700 px-2 py-0.5 rounded text-[10px] font-extrabold uppercase border border-orange-200 tracking-wider">
+                      {usuario.rol}
+                    </span>
+                 </div>
               </div>
             ) : (
               <div className="flex gap-2 mt-1">
@@ -423,9 +466,39 @@ export default function Navbar({ onLoginClick, onRegisterClick }) {
             )}
           </div>
 
-          {/* CUERPO DEL MENÚ */}
+          {/* CUERPO DEL MENÚ MÓVIL */}
           <div className="flex-1 py-2">
-            {/* Navegación Principal */}
+            
+            {/* --- SECCIÓN ESPECÍFICA POR ROL (MÓVIL) --- */}
+            {usuario && usuario.rol === 'proveedor' && (
+               <div className="border-b border-gray-100 pb-2 mb-2 bg-orange-50/50">
+                 <p className="px-5 py-2 text-xs font-bold text-orange-800 uppercase tracking-wider">Menú Proveedor</p>
+                 <button onClick={() => handleNavigate("/proveedor/productos")} className="w-full flex items-center gap-3 px-5 py-3 text-gray-700 hover:bg-orange-100 text-left">
+                    <Store size={20} className="text-blue-600" />
+                    <span>Mis Productos</span>
+                 </button>
+                 <button onClick={() => handleNavigate("/proveedor/productos/nuevo")} className="w-full flex items-center gap-3 px-5 py-3 text-gray-700 hover:bg-orange-100 text-left">
+                    <PlusCircle size={20} className="text-green-600" />
+                    <span>Crear Producto</span>
+                 </button>
+                 <button onClick={() => handleNavigate("/ReportesP")} className="w-full flex items-center gap-3 px-5 py-3 text-gray-700 hover:bg-orange-100 text-left">
+                    <ClipboardList size={20} className="text-purple-600" />
+                    <span>Reportes</span>
+                 </button>
+               </div>
+            )}
+
+            {usuario && usuario.rol === 'administrador' && (
+               <div className="border-b border-gray-100 pb-2 mb-2 bg-red-50/50">
+                 <p className="px-5 py-2 text-xs font-bold text-red-800 uppercase tracking-wider">Menú Administrador</p>
+                 <button onClick={() => handleNavigate("/Administrativa")} className="w-full flex items-center gap-3 px-5 py-3 text-gray-700 hover:bg-red-100 text-left">
+                    <LayoutDashboard size={20} className="text-red-600" />
+                    <span>Panel Administrativo</span>
+                 </button>
+               </div>
+            )}
+
+            {/* Navegación General */}
             <div className="border-b border-gray-100 pb-2 mb-2">
               <button
                 onClick={() => handleNavigate("/")}
@@ -534,7 +607,7 @@ export default function Navbar({ onLoginClick, onRegisterClick }) {
             </div>
           </div>
 
-          {/* FOOTER DEL MENÚ */}
+          {/* FOOTER DEL MENÚ MÓVIL */}
           {usuario && (
             <div className="bg-gray-50 p-4 border-t border-gray-200 space-y-3">
               <button
@@ -549,12 +622,17 @@ export default function Navbar({ onLoginClick, onRegisterClick }) {
               >
                 <Package size={18} /> Mis Pedidos
               </button>
-              <button
-                onClick={() => handleNavigate("/solicitar-proveedor")}
-                className="flex items-center gap-3 text-sm font-medium text-gray-700 w-full"
-              >
-                <Package size={18} /> Sé Socio
-              </button>
+              
+              {/* Botón Sé Socio (Solo si no es ya proveedor o admin, opcional) */}
+              {usuario.rol === 'usuario' && (
+                 <button
+                    onClick={() => handleNavigate("/solicitar-proveedor")}
+                    className="flex items-center gap-3 text-sm font-medium text-gray-700 w-full"
+                  >
+                    <Package size={18} /> Sé Socio
+                  </button>
+              )}
+              
               <button
                 onClick={handleCerrarSesion}
                 className="flex items-center gap-3 text-sm font-medium text-red-600 w-full pt-2 mt-2 border-t border-gray-200"
