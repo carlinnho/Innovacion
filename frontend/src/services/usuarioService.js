@@ -1,4 +1,4 @@
-import { API_ENDPOINTS } from '../config/api';
+import { API_ENDPOINTS, API_BASE_URL } from '../config/api';
 
 /**
  * Servicio para manejar operaciones relacionadas con usuarios
@@ -59,6 +59,12 @@ const usuarioService = {
       throw error;
     }
   },
+
+  // Método auxiliar para obtener token
+  getToken() {
+    return localStorage.getItem('token');
+  },
+
   async obtenerUsuarios() {
   try {
     const token = localStorage.getItem('token'); // tu panel admin necesita JWT
@@ -82,6 +88,58 @@ const usuarioService = {
   }
 },
 
+/**
+   * Obtener perfil del usuario logueado
+   */
+  async obtenerPerfil() {
+    try {
+      const token = this.getToken();
+      // Si API_BASE_URL no está definido, usa 'http://localhost:8080/api'
+      const baseUrl = API_BASE_URL || 'http://localhost:8080/api'; 
+      
+      const response = await fetch(`${baseUrl}/usuarios/perfil`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) throw new Error('Error al cargar perfil');
+      return await response.json();
+    } catch (error) {
+      console.error('Error obtenerPerfil:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Actualizar perfil
+   */
+  async actualizarPerfil(datos) {
+    try {
+      const token = this.getToken();
+      const baseUrl = API_BASE_URL || 'http://localhost:8080/api';
+
+      const response = await fetch(`${baseUrl}/usuarios/perfil`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(datos),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || 'Error al actualizar');
+      
+      return data;
+    } catch (error) {
+      console.error('Error actualizarPerfil:', error);
+      throw error;
+    }
+  }
 };
+
+
 
 export default usuarioService;

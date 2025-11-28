@@ -219,6 +219,37 @@ const cartService = {
       throw error;
     }
   },
+
+  /**
+   * Realizar el pedido (Checkout)
+   * @param {Object} datosEntrega - { direccionEntrega, telefonoContacto, metodoPago }
+   * @returns {Promise<Object>}
+   */
+  async realizarPedido(datosEntrega) {
+    try {
+      const token = this.getToken();
+
+      const response = await fetch(`${API_BASE_URL}/pedidos/checkout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(datosEntrega),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Error al procesar el pedido');
+      }
+
+      return result;
+    } catch (error) {
+      console.error('Error en realizarPedido:', error);
+      throw error;
+    }
+  },
 };
 
 export default cartService;

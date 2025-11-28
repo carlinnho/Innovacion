@@ -42,7 +42,7 @@ public class Pedido {
     @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false, columnDefinition = "ENUM('pendiente','confirmado','en_preparacion','enviado','entregado','cancelado') DEFAULT 'pendiente'")
     @JsonProperty("estado")
-    private EstadoPedido estado = EstadoPedido.PENDIENTE;
+    private EstadoPedido estado = EstadoPedido.pendiente;
 
     @NotEmpty(message = "La dirección de entrega es obligatoria")
     @Column(name = "direccion_entrega", nullable = false, columnDefinition = "TEXT")
@@ -71,11 +71,11 @@ public class Pedido {
 
     // Enum para el estado del pedido
     public enum EstadoPedido {
-        PENDIENTE,
-        CONFIRMADO,
-        EN_PREPARACION,
-        ENVIADO,
-        ENTREGADO,
-        CANCELADO
+        pendiente,
+        confirmado,
+        en_preparacion,
+        enviado,
+        entregado,
+        cancelado
     }
 }

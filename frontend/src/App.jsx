@@ -20,6 +20,7 @@ import EditarProducto from "./pages/EditarProducto";
 import LoginModal from "./components/LoginModal";
 import RegistroModal from "./components/RegistroModal";
 import ProtectedRoute from "./components/ProtectedRoute";
+import MisVentas from './pages/MisVentas';
 
 // ✨ IMPORTACIÓN DEL CART PROVIDER
 import { CartProvider } from "./context/CartContext";
@@ -151,6 +152,16 @@ function App() {
               </ProtectedRoute>
             } 
           />
+
+          {/* Reportes de ventas
+          <Route 
+            path="/misventas" 
+            element={
+              <ProtectedRoute pagina="misventas">
+                <MisVentas />
+              </ProtectedRoute>
+            } 
+          />*/}
 
           {/* Gestión de productos */}
           <Route 

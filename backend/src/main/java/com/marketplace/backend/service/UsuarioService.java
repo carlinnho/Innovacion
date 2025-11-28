@@ -8,6 +8,7 @@ import com.marketplace.backend.dominio.Usuario;
 import com.marketplace.backend.dto.RegistroUsuarioDTO;
 import com.marketplace.backend.dto.UsuarioResponseDTO;
 import com.marketplace.backend.repository.UsuarioRepository;
+import com.marketplace.backend.dto.ActualizarPerfilDTO;
 
 @Service
 @RequiredArgsConstructor
@@ -62,5 +63,32 @@ public class UsuarioService {
      */
     public boolean existeEmail(String email) {
         return usuarioRepository.existsByEmail(email);
+    }
+
+    /**
+     * Obtener usuario por ID (para el perfil)
+     */
+    @Transactional(readOnly = true)
+    public Usuario obtenerPorId(Long id) {
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    }
+
+    /**
+     * Actualizar datos del perfil
+     */
+    @Transactional
+    public Usuario actualizarPerfil(Long id, ActualizarPerfilDTO dto) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        usuario.setNombre(dto.getNombre().trim());
+        usuario.setApellido(dto.getApellido().trim());
+        
+        if (dto.getTelefono() != null) {
+            usuario.setTelefono(dto.getTelefono().trim());
+        }
+
+        return usuarioRepository.save(usuario);
     }
 }
